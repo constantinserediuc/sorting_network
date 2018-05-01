@@ -16,7 +16,12 @@ class GASolver:
         pass
 
     def get_best_solution_from(self, population):
-        pass
+        fitness_computer = SortedOutputsFitnessComputer()
+        fitness_per_chromosome = []
+        for chromosome in self.population.chromosomes:
+            fitness_per_chromosome.append(fitness_computer.get_fitness(chromosome.get_sorting_network()))
+        max_fitness = max(fitness_per_chromosome)
+        return {"chromosome": fitness_per_chromosome.index(max_fitness), "fitness": max_fitness}
 
     def get_worst_solution_from(self, population):
         pass
@@ -25,7 +30,7 @@ class GASolver:
         population = Population.get_random_population_with_Green_filter(self.POP_SIZE, self.NR_WIRES)
         global_best_solution = {'fitness': 0, 'chromosome': None}
         for generation in range(self.GENERATIONS):
-            selector = RouletteWheelSelector(population, SortedOutputsFitnessComputer)
+            selector = RouletteWheelSelector(population, SortedOutputsFitnessComputer())
             descendant_population = selector.select()
             # best_solution_from_population = self.get_best_solution_from(descendant_population)
 
@@ -48,4 +53,4 @@ class GASolver:
             # if best_solution_from_population['fitness'] > global_best_solution['fitness']:
             #     global_best_solution = copy.deepcopy(best_solution_from_population)
             #
-        return best_solution_from_population
+        print(best_solution_from_population)
