@@ -1,7 +1,6 @@
 class SortingNetwork:
     def __init__(self):
         self.comparators = []
-        self.nr_wires = 0
 
     def can_comparator_be_added(self, comparator):
         if len(comparator) != 2 or comparator[0] >= comparator[1]:

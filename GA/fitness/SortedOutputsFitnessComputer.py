@@ -14,8 +14,9 @@ class SortedOutputsFitnessComputer(object):
 
     def get_fitness(self, sorting_network):
         fails = 0
+        self.set_seq_to_sort()
         for i in range(1, self.max_sequence_to_check):
             if sorting_network.sort_binary_sequence(i) not in self.seq_to_sort:
                 fails += 1
 
-        return fails / self.max_sequence_to_check
+        return 1 - (fails / self.max_sequence_to_check)

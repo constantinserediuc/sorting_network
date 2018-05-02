@@ -17,7 +17,6 @@ class Population(object):
         for _ in range(pop_size):
             sn = RandomSortingNetworkFactory.get_sorting_network_with(nr_wires, nr_comparators)
             chromosomes.append(Chromosome(sn))
-        chromosomes.append(GreenFilter.get_filter(nr_wires))
         i = random.randint(0, pop_size)
         chromosomes[i] = Chromosome(GreenFilter.get_filter(nr_wires))
         pop = Population(chromosomes)

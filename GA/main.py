@@ -1,3 +1,7 @@
-from SortingNetwork.GreenFilter import *
+from SortingNetwork.SVGConvertor import svg
+from GA.GASolver import *
 
-print(GreenFilter.get_filter(4).get_comparators())
+solver = GASolver()
+best = solver.solve()
+svg(best['chromosome'].get_sorting_network())
+print(best['fitness'])
