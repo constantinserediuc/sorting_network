@@ -1,5 +1,6 @@
 class Info:
-    def __init__(self):
-        self.NR_WIRES = 5
-        self.CROSSOVER_RATE = 0.6
-        self.MUTATION_RATE = 0.05
+    NR_WIRES = 5
+    NR_COMPARATORS = 70
+    CROSSOVER_RATE = 0.6
+    MUTATION_RATE = 0.05
+    seq_to_check_after_using_green_filter = []

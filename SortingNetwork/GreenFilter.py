@@ -1,4 +1,5 @@
 from SortingNetwork.SortingNetwork import SortingNetwork
+from GA.Utils import Info
 
 
 class GreenFilter:

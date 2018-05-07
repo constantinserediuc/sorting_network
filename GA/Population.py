@@ -11,13 +11,14 @@ class Population(object):
         self.chromosomes = chromosomes
 
     @staticmethod
-    def get_random_population_with_Green_filter(pop_size, nr_wires):
-        nr_comparators = GreenFilter.get_nr_comparators_for(nr_wires)
+    def get_random_population_with_Green_filter(pop_size, nr_wires, nr_comparators):
+        nr_comparators_green = GreenFilter.get_nr_comparators_for(nr_wires)
+        nr_comparators = nr_comparators - nr_comparators_green
         chromosomes = []
         for _ in range(pop_size):
             sn = RandomSortingNetworkFactory.get_sorting_network_with(nr_wires, nr_comparators)
             chromosomes.append(Chromosome(sn))
-        i = random.randint(0, pop_size)
-        chromosomes[i] = Chromosome(GreenFilter.get_filter(nr_wires))
+        # i = random.randint(0, pop_size)
+        # chromosomes[i] = Chromosome(GreenFilter.get_filter(nr_wires))
         pop = Population(chromosomes)
         return pop

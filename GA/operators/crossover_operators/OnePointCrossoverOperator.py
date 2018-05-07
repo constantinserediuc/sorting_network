@@ -7,7 +7,7 @@ from GA.Utils import Info
 class OnePointCrossOverOperator(object):
     def __init__(self, population):
         self.population = population
-        self.crossover_rate = Info().CROSSOVER_RATE
+        self.crossover_rate = Info.CROSSOVER_RATE
 
     def do_crossover(self, c1, c2):
         a = c1.get_sorting_network().get_comparators()

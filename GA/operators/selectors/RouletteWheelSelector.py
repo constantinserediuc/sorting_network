@@ -14,7 +14,7 @@ class RouletteWheelSelector(object):
 
     def compute_fitness_per_chromosome(self):
         for chromosome in self.population.chromosomes:
-            self.fitness_per_chromosome.append(self.fitness_computer.get_fitness(chromosome.get_sorting_network()))
+            self.fitness_per_chromosome.append(self.fitness_computer.get_fitness_using_green_filter(chromosome.get_sorting_network()))
 
     def compute_relative_fitness(self):
         total_fitness = sum(self.fitness_per_chromosome)

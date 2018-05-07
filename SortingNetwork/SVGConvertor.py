@@ -34,7 +34,7 @@ def svg(sn):
         usedInputs.append(c[1])
 
     w = x + xscale
-    n = Info().NR_WIRES
+    n = Info.NR_WIRES
     h = (n + 1) * yscale
     result = "<?xml version='1.0' encoding='utf-8'?>"
     result += "<!DOCTYPE svg>"
