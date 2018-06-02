@@ -1,6 +1,7 @@
 class SortingNetwork:
     def __init__(self):
         self.comparators = []
+        self.novelty = []
 
     def can_comparator_be_added(self, comparator):
         if len(comparator) != 2 or comparator[0] >= comparator[1]:
@@ -33,7 +34,11 @@ class SortingNetwork:
 
     def sort_binary_sequence(self, sequence):
         result = sequence
+        if len(self.novelty) == 0:
+            self.novelty = [0 for _ in self.comparators]
         for c in self.comparators:
             if (result >> c[0]) & 1 < (result >> c[1]) & 1:
                 result = (result - 2 ** c[1]) | 2 ** c[0]
+                self.novelty[c[0]] += 1
+                self.novelty[c[1]] += 1
         return result

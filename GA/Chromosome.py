@@ -5,3 +5,4 @@ class Chromosome(object):
 
     def get_sorting_network(self):
         return self.sorting_network
+

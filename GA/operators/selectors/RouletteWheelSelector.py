@@ -2,19 +2,20 @@ import copy
 import random
 
 from GA.Population import Population
+from GA.fitness.SortedOutputsWithNoveltyFitnessComputer import SortedOutputsWithNoveltyFitnessComputer
 
 
 class RouletteWheelSelector(object):
     def __init__(self, population, fitness_computer):
         self.population = population
-        self.fitness_computer = fitness_computer
+        # self.fitness_computer = fitness_computer
+        self.fitness_computer = SortedOutputsWithNoveltyFitnessComputer()
         self.fitness_per_chromosome = []
         self.relative_fitness = []
         self.cumulative_fitness = []
 
     def compute_fitness_per_chromosome(self):
-        for chromosome in self.population.chromosomes:
-            self.fitness_per_chromosome.append(self.fitness_computer.get_fitness_using_green_filter(chromosome.get_sorting_network()))
+        self.fitness_per_chromosome = copy.deepcopy(self.fitness_computer.compute_fitness_for_population(self.population))
 
     def compute_relative_fitness(self):
         total_fitness = sum(self.fitness_per_chromosome)

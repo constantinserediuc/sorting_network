@@ -1,5 +1,6 @@
 from GA.fitness.SortedOutputsFitnessComputer import SortedOutputsFitnessComputer
 from GA.operators.crossover_operators.OnePointCrossoverOperator import *
+from GA.fitness.SortedOutputsWithNoveltyFitnessComputer import SortedOutputsWithNoveltyFitnessComputer
 from GA.operators.mutators.SimpleMutator import *
 from GA.operators.selectors.RouletteWheelSelector import RouletteWheelSelector
 from GA.operators.crossover_operators.VelocityCrossover import *
@@ -14,15 +15,28 @@ class GASolver:
         Info.seq_to_check_after_using_green_filter = (SortedOutputsFitnessComputer()).get_unsorted_binary_seq()
         self.global_best_solution = {'fitness': 0, 'chromosome': None}
 
+    # def update_best(self, population):
+    #     fitness_computer = SortedOutputsFitnessComputer()
+    #     fitness_per_chromosome = []
+    #     for chromosome in population.chromosomes:
+    #         fitness = fitness_computer.get_fitness_using_green_filter(chromosome.get_sorting_network())
+    #         if chromosome.best_so_far["fitness"] < fitness:
+    #             chromosome.best_so_far["fitness"] = fitness
+    #             chromosome.best_so_far["chromosome"] = chromosome.get_sorting_network()
+    #         fitness_per_chromosome.append(fitness)
+    #     max_fitness = max(fitness_per_chromosome)
+    #     if max_fitness > self.global_best_solution['fitness']:
+    #         self.global_best_solution = {
+    #             "chromosome": copy.deepcopy(population.chromosomes[fitness_per_chromosome.index(max_fitness)]),
+    #             "fitness": max_fitness}
+
     def update_best(self, population):
-        fitness_computer = SortedOutputsFitnessComputer()
-        fitness_per_chromosome = []
-        for chromosome in population.chromosomes:
-            fitness = fitness_computer.get_fitness_using_green_filter(chromosome.get_sorting_network())
-            if chromosome.best_so_far["fitness"] < fitness:
-                chromosome.best_so_far["fitness"] = fitness
-                chromosome.best_so_far["chromosome"] = chromosome.get_sorting_network()
-            fitness_per_chromosome.append(fitness)
+        fitness_computer = SortedOutputsWithNoveltyFitnessComputer()
+        fitness_per_chromosome = fitness_computer.compute_fitness_for_population(population)
+        for i in range(len(population.chromosomes)):
+            if population.chromosomes[i].best_so_far["fitness"] < fitness_per_chromosome[i]:
+                population.chromosomes[i].best_so_far["fitness"] = fitness_per_chromosome[i]
+                population.chromosomes[i].best_so_far["chromosome"] = population.chromosomes[i].get_sorting_network()
         max_fitness = max(fitness_per_chromosome)
         if max_fitness > self.global_best_solution['fitness']:
             self.global_best_solution = {
@@ -30,10 +44,11 @@ class GASolver:
                 "fitness": max_fitness}
 
     def solve(self):
-        population = Population.get_random_population_with_Green_filter(self.POP_SIZE, self.NR_WIRES,
-                                                                        self.NR_COMPARATORS)
+        population = Population.get_random_population_with_Green_filter_as_prefix(self.POP_SIZE, self.NR_WIRES,
+                                                                                  self.NR_COMPARATORS)
 
         for generation in range(self.GENERATIONS):
+            print(generation)
             selector = RouletteWheelSelector(population, SortedOutputsFitnessComputer())
             descendant_population = selector.select()
             self.update_best(descendant_population)
